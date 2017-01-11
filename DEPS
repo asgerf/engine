@@ -25,9 +25,36 @@ vars = {
   'base_revision': 'b2412302ed4e45bfb47d7b5c0c3418077009e1ce',
   'skia_revision': '130a118cc68f8f9973e9572356011de378463fea',
 
+    # Necessary for some packages we rely on for generating the patched sdk.
+   "dart_root" : "src/dart",
+   "github_mirror":
+       "https://chromium.googlesource.com/external/github.com/dart-lang/%s.git",
+   "github_dartlang": "https://github.com/dart-lang/%s.git",
+   "args_tag": "@0.13.5",
+   "async_tag": "@1.11.1",
+   "charcode_tag": "@1.1.0",
+   "collection_tag": "@1.9.1",
+   "convert_tag": "@2.0.1",
+   "crypto_tag" : "@2.0.1",
+   "csslib_tag" : "@0.13.2",
+   "glob_tag": "@1.1.3",
+   "html_tag" : "@0.13.0",
+   "isolate_tag": "@0.2.3",
+   "logging_tag": "@0.11.3+1",
+   "package_config_tag": "@1.0.0",
+   "path_tag": "@1.3.9",
+   "plugin_tag": "@0.2.0",
+   "source_span_tag": "@1.2.3",
+   "string_scanner_tag": "@1.0.0",
+   "typed_data_tag": "@1.1.3",
+   "utf_tag": "@0.9.0+3",
+   "watcher_tag": "@0.9.7+3",
+   "yaml_tag": "@2.1.10",
+
+
   # Note: When updating the Dart revision, ensure that all entries that are
   # dependencies of dart are also updated
-  'dart_revision': '554c3c9683264ab9840a2c2371942b5a9f5e1fae',
+  'dart_revision': 'origin/master',
   'dart_boringssl_gen_revision': '62c20247d582444cb2804f9ea4e3abaa6e47f6a5',
   'dart_boringssl_revision': '8d343b44bbab829d1a28fdef650ca95f7db4412e',
   'dart_observatory_packages_revision': '26aad88f1c1915d39bbcbff3cad589e2402fdcf1',
@@ -103,6 +130,50 @@ deps = {
    Var('chromium_git') +
    '/external/github.com/dart-lang/observatory_pub_packages' + '@' +
    Var('dart_observatory_packages_revision'),
+
+
+   Var("dart_root") + "/third_party/pkg/path":
+       (Var("github_mirror") % "path") + Var("path_tag"),
+   Var("dart_root") + "/third_party/pkg/html":
+       (Var("github_mirror") % "html") + Var("html_tag"),
+   Var("dart_root") + "/third_party/pkg/plugin":
+       (Var("github_mirror") % "plugin") + Var("plugin_tag"),
+   Var("dart_root") + "/third_party/pkg_tested/package_config":
+       (Var("github_mirror") % "package_config") +
+       Var("package_config_tag"),
+   Var("dart_root") + "/third_party/pkg/charcode":
+       (Var("github_mirror") % "charcode") + Var("charcode_tag"),
+   Var("dart_root") + "/third_party/pkg/source_span":
+       (Var("github_mirror") % "source_span") + Var("source_span_tag"),
+   Var("dart_root") + "/third_party/pkg/watcher":
+       (Var("github_mirror") % "watcher") + Var("watcher_tag"),
+   Var("dart_root") + "/third_party/pkg/isolate":
+       (Var("github_dartlang") % "isolate") + Var("isolate_tag"),
+   Var("dart_root") + "/third_party/pkg/yaml":
+       (Var("github_mirror") % "yaml") + Var("yaml_tag"),
+   Var("dart_root") + "/third_party/pkg/args":
+       (Var("github_mirror") % "args") + Var("args_tag"),
+   Var("dart_root") + "/third_party/pkg/csslib":
+       (Var("github_mirror") % "csslib") + Var("csslib_tag"),
+   Var("dart_root") + "/third_party/pkg/async":
+       (Var("github_mirror") % "async") + Var("async_tag"),
+   Var("dart_root") + "/third_party/pkg/convert":
+       "https://github.com/dart-lang/convert.git" + Var("convert_tag"),
+   Var("dart_root") + "/third_party/pkg/crypto":
+       (Var("github_mirror") % "crypto") + Var("crypto_tag"),
+   Var("dart_root") + "/third_party/pkg/glob":
+       (Var("github_mirror") % "glob") + Var("glob_tag"),
+   Var("dart_root") + "/third_party/pkg/logging":
+       (Var("github_mirror") % "logging") + Var("logging_tag"),
+   Var("dart_root") + "/third_party/pkg/typed_data":
+       (Var("github_dartlang") % "typed_data") + Var("typed_data_tag"),
+   Var("dart_root") + "/third_party/pkg/utf":
+       (Var("github_mirror") % "utf") + Var("utf_tag"),
+   Var("dart_root") + "/third_party/pkg/collection":
+       (Var("github_mirror") % "collection") + Var("collection_tag"),
+   Var("dart_root") + "/third_party/pkg/string_scanner":
+       (Var("github_mirror") % "string_scanner") +
+       Var("string_scanner_tag"),
 
   'src/third_party/root_certificates':
    Var('chromium_git') +
@@ -190,6 +261,22 @@ hooks = [
         'python',
         'src/tools/remove_stale_pyc_files.py',
         'src/tools',
+    ],
+  },
+  {
+    "name": "checked_in_dart_sdks",
+    "pattern": ".",
+    "action": [
+      "download_from_google_storage",
+      "--no_auth",
+      "--no_resume",
+      "--bucket",
+      "dart-dependencies",
+      "--recursive",
+      "--auto_platform",
+      "--extract",
+      "--directory",
+      "src/dart/tools/sdks",
     ],
   },
 ]
