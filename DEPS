@@ -33,6 +33,7 @@ vars = {
    "args_tag": "@0.13.5",
    "async_tag": "@1.11.1",
    "charcode_tag": "@1.1.0",
+   "cli_util_tag" : "@0.0.1+3",
    "collection_tag": "@1.9.1",
    "convert_tag": "@2.0.1",
    "crypto_tag" : "@2.0.1",
@@ -49,6 +50,8 @@ vars = {
    "typed_data_tag": "@1.1.3",
    "utf_tag": "@0.9.0+3",
    "watcher_tag": "@0.9.7+3",
+   "when_tag": "@0.2.0+2",
+   "which_tag": "@0.1.3+1",
    "yaml_tag": "@2.1.10",
 
 
@@ -143,10 +146,16 @@ deps = {
        Var("package_config_tag"),
    Var("dart_root") + "/third_party/pkg/charcode":
        (Var("github_mirror") % "charcode") + Var("charcode_tag"),
+   Var("dart_root") + "/third_party/pkg/cli_util":
+       (Var("github_mirror") % "cli_util") + Var("cli_util_tag"),
    Var("dart_root") + "/third_party/pkg/source_span":
        (Var("github_mirror") % "source_span") + Var("source_span_tag"),
    Var("dart_root") + "/third_party/pkg/watcher":
        (Var("github_mirror") % "watcher") + Var("watcher_tag"),
+   Var("dart_root") + "/third_party/pkg/when":
+       (Var("github_mirror") % "when") + Var("when_tag"),
+   Var("dart_root") + "/third_party/pkg/which":
+       (Var("github_mirror") % "which") + Var("which_tag"),
    Var("dart_root") + "/third_party/pkg/isolate":
        (Var("github_dartlang") % "isolate") + Var("isolate_tag"),
    Var("dart_root") + "/third_party/pkg/yaml":
